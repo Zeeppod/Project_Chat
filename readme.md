@@ -1,6 +1,6 @@
 ## Name project
 "Chat"
-##Description
+## Description
 The given project is intended for simplification and simplicity of dialogue of users of the given chat with each other.
 ## Author
 Sergeev Dmitry
