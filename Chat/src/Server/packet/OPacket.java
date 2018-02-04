@@ -7,21 +7,22 @@ import java.net.Socket;
 
 public abstract class OPacket {
 
-    private Socket socket;
+   private Socket socket;
 
-    public Socket getSocket() {
-        return socket;
-    }
+   public Socket getSocket() {
+      return socket;
+   }
 
-    public void setSocket(Socket socket){
-        this.socket = socket;
-    }
+   public void setSocket(Socket socket) {
+      this.socket = socket;
+   }
 
-    public abstract short getID();
+   public abstract short getId();
 
-    public abstract void write(DataOutputStream dos) throws IOException;
+   public abstract void write(DataOutputStream dos) throws IOException;
 
-    public abstract void read(DataInputStream dis) throws IOException;
+   public abstract void read(DataInputStream dis) throws IOException;
 
-    public abstract void persons();
+   public abstract void handle();
+
 }

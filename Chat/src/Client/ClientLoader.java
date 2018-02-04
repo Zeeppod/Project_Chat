@@ -1,10 +1,9 @@
 package Client;
 
-import Client.packet.Authorize;
 import Client.packet.OPacket;
+import Client.packet.PacketAuthorize;
 import Client.packet.PacketManager;
-import Client.packet.PacketManeher;
-import Client.packet.PacketMessage;
+import Client.packet.PacketMessege;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -15,97 +14,93 @@ import java.util.Scanner;
 public class ClientLoader {
 
     private static Socket socket;
-    private static boolean sentNicknae = false;
+    private static boolean sentNickname = false;
 
-    public static void main(String[] args){
+     public static void main(String[] args){
         connect();
-        readChat();
-        try{
-            Thread.sleep(1000);
-        }catch (InterruptedException ex){
-
-        }
+        handle();
         end();
-    }
 
-    public static void sendPacket(PacketMessage packet){
-        try{
+     }
+
+     public static void sendPacket(OPacket packet){
+        try {
             DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
-            dos.writeShort(packet.getID());
+            dos.writeShort(packet.getId());
             packet.write(dos);
             dos.flush();
         }catch (IOException ex){
             ex.printStackTrace();
         }
-    }
+     }
 
-    private static void connect(){
+     private static void connect(){
         try {
             socket = new Socket("localhost", 8889);
         }catch (IOException ex){
             ex.printStackTrace();
         }
-    }
+     }
 
-    private static void persons(){
-        Thread persons = new Thread(){
-            @Override
-            public void run(){
-                while (true){
-                    try {
+     private static void handle(){
+         Thread handler = new Thread(){
+
+             @Override
+             public void run(){
+                 while (true){
+                     try{
                         DataInputStream dis = new DataInputStream(socket.getInputStream());
                         if (dis.available() <= 0){
-                            try{
-                                Thread.sleep(10);
-                            }catch (InterruptedException ex){
-                            }
+                           try {
+                               Thread.sleep(10);
+                           }catch (InterruptedException ex){}
                             continue;
                         }
-                        short id  = dis.readShort();
-                        OPacket packet = PacketManeher.getPacket(id);
+                        short id = dis.readShort();
+                        OPacket packet = PacketManager.getPacket(id);
                         packet.read(dis);
-                        packet.persons();
-                    }catch (IOException ex){
-                        ex.printStackTrace();
-                    }
+                        packet.handle();
+                     }catch (IOException ex){
+                         ex.printStackTrace();
+                     }
+                 }
+             }
+         };
+         handler.start();
 
-                }
-            }
-        };
-        persons.start();
-        readChat();
-    }
+         readChat();
+     }
 
     private static void readChat(){
         Scanner scan = new Scanner(System.in);
-        while (true){
-            if (scan.hasNextLine()){
+        while (true) {
+            if (scan.hasNextLine()) {
                 String line = scan.nextLine();
-                if(!sentNicknae){
-                    sentNicknae = true;
-                    sendPacket(new Authorize(line));
-                }
-                sendPacket(new PacketMessage(null, line));
-                if (line.equals("/end"))
+                if (line.equals("/end")){
                     end();
-                else {
-                    System.out.println("Неизвестная команда");
                 }
-            }else
-                try{
+                if (!sentNickname){
+                    sentNickname = true;
+                    sendPacket(new PacketAuthorize(line));
+                    continue;
+                }
+                sendPacket(new PacketMessege(null, line));
+            } else
+                try {
                     Thread.sleep(10);
-                }catch (InterruptedException ex){
+                } catch (InterruptedException ex) {
 
                 }
         }
     }
 
-    private static void end(){
-        try{
+      private static void end(){
+        try {
             socket.close();
         }catch (IOException ex){
             ex.printStackTrace();
         }
-    }
+        System.exit(0);
+      }
 
 }

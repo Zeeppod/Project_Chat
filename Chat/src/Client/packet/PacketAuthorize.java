@@ -4,20 +4,22 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-public class Authorize extends OPacket {
+public class PacketAuthorize extends OPacket {
 
     private String nickname;
 
-    public Authorize(){
+    public PacketAuthorize(){
 
     }
 
-    public Authorize(String nickname){
+    public PacketAuthorize(String nickname){
         this.nickname = nickname;
     }
 
+
+
     @Override
-    public short getID() {
+    public short getId() {
         return 1;
     }
 
@@ -30,8 +32,8 @@ public class Authorize extends OPacket {
     public void read(DataInputStream dis) throws IOException {
 
     }
-
-    public void persons(){
+    @Override
+    public void handle(){
 
     }
 }
