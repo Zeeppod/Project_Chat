@@ -1,40 +1,40 @@
 package Client.packet;
 
+import Client.packet.OPacket;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-public class PacketMessege extends OPacket{
+public class PacketMessage extends OPacket{
 
-    private String sender, messege;
+    private String sender, message;
 
-    public PacketMessege() {
+    public PacketMessage() {}
 
-    }
-
-    public PacketMessege(String sender, String messege){
+    public PacketMessage(String sender, String message){
         this.sender = sender;
-        this.messege = messege;
+        this.message = message;
     }
 
     @Override
-    public short getId() {
+    public short getID() {
         return 2;
     }
 
     @Override
     public void write(DataOutputStream dos) throws IOException {
-        dos.writeUTF(messege);
+        dos.writeUTF(message);
     }
 
     @Override
     public void read(DataInputStream dis) throws IOException {
         sender = dis.readUTF();
-        messege = dis.readUTF();
+        message = dis.readUTF();
     }
 
     @Override
-    public void handle() {
-        System.out.println(String.format("[%s] %s", sender, messege));
+    public void persons(){
+        System.out.println(String.format("[%s] %s", sender, message));
     }
 }

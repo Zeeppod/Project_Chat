@@ -6,22 +6,20 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-public class PacketAuthorize extends OPacket {
+public class Authorize extends OPacket {
 
     private String nickname;
 
-    public PacketAuthorize(){
+    public Authorize(){
 
     }
 
-    public PacketAuthorize(String nickname){
+    public Authorize(String nickname){
         this.nickname = nickname;
     }
 
-
-
     @Override
-    public short getId() {
+    public short getID() {
         return 1;
     }
 
@@ -32,13 +30,19 @@ public class PacketAuthorize extends OPacket {
 
     @Override
     public void read(DataInputStream dis) throws IOException {
-        nickname = dis.readUTF();
+            nickname = dis.readUTF();
     }
 
     @Override
-    public void handle(){
-        ServerLoader.getHandler(getSocket()).setNickname(nickname);
-        System.out.println("Authorized new socket whit nickname" + nickname);
+    public void persons() {
+        ServerLoader.getPersons(getSocket()).setNickname(nickname);
+        System.out.println("Out nickname is "+ nickname );
+        try{
+            Thread.sleep(2000);
+        }catch (InterruptedException ex){
+
+        }
+        ServerLoader.end();
     }
 
 }
