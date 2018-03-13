@@ -7,7 +7,7 @@ import java.net.Socket;
 
 public abstract class OPacket {
 
-   private Socket socket;
+   public Socket socket;
 
    public Socket getSocket() {
       return socket;
@@ -23,6 +23,6 @@ public abstract class OPacket {
 
    public abstract void read(DataInputStream dis) throws IOException;
 
-   public abstract void handle();
+   public abstract void handle() throws Exception;
 
 }

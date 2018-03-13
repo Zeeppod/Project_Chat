@@ -17,8 +17,8 @@ public class ClientLoader {
     private static boolean sentNickname = false;
 
      public static void main(String[] args){
-        connect();
-        handle();
+         connect();
+         handle();
         end();
 
      }
@@ -34,12 +34,18 @@ public class ClientLoader {
         }
      }
 
-     private static void connect(){
-        try {
-            socket = new Socket("localhost", 8889);
-        }catch (IOException ex){
-            ex.printStackTrace();
-        }
+     private static void connect() {
+         Scanner scan = new Scanner(System.in);
+         System.out.println("Введите Ip: ");
+         String IP = scan.nextLine();
+         System.out.println("Введите порт: ");
+         String PORT = scan.nextLine();
+         try {
+             socket = new Socket(IP, Integer.parseInt(PORT));
+         }catch (IOException ex){
+             ex.printStackTrace();
+         }
+         System.out.println("Введите ваш ник: ");
      }
 
      private static void handle(){

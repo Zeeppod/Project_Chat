@@ -1,14 +1,19 @@
 package Client.packet;
 
+
+import Client.GUI.ClientLauncher;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+
 
 public class PacketMessege extends OPacket{
 
     private String sender, messege;
 
-    public PacketMessege() {
+
+    public PacketMessege(){
 
     }
 
@@ -35,6 +40,6 @@ public class PacketMessege extends OPacket{
 
     @Override
     public void handle() {
-        System.out.println(String.format("[%s] %s", sender, messege));
+        ClientLauncher.ta.append(String.format("[%s] %s", sender, messege) + "\n");
     }
 }

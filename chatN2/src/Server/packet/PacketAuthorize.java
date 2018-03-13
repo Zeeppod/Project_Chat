@@ -26,7 +26,7 @@ public class PacketAuthorize extends OPacket {
     }
 
     @Override
-    public void write(DataOutputStream dos) throws IOException {
+    public void write(DataOutputStream dos) {
 
     }
 
@@ -36,9 +36,7 @@ public class PacketAuthorize extends OPacket {
     }
 
     @Override
-    public void handle(){
+    public void handle() throws Exception {
         ServerLoader.getHandler(getSocket()).setNickname(nickname);
-        System.out.println("Authorized new socket whit nickname" + nickname);
     }
-
 }

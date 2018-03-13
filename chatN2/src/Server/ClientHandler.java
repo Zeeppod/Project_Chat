@@ -1,16 +1,20 @@
 package Server;
 
+
 import Server.packet.OPacket;
 import Server.packet.PacketMenager;
 
 import java.io.DataInputStream;
-import java.io.IOException;
 import java.net.Socket;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class ClientHandler extends Thread {
 
     private  final Socket client;
-    private String nickname = "Неизвестный";
+    public String nickname;
+    Date data = new Date();
+    SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss dd.MM.yyyy");
 
     public ClientHandler(Socket client){
         this.client = client;
@@ -24,10 +28,11 @@ public class ClientHandler extends Thread {
         this.nickname = nickname;
     }
 
+
     @Override
     public void run(){
          while (true) {
-                if (readData())
+                if (!readData())
                      try {
                          Thread.sleep(10);
                      }catch (InterruptedException ex){ }
@@ -44,14 +49,14 @@ public class ClientHandler extends Thread {
             packet.setSocket(client);
             packet.read(dis);
             packet.handle();
-        }catch (IOException ex){
-            ex.printStackTrace();
-        }
+        }catch (Exception ex){}
         return true;
     }
 
+
     public void invalidate(){
         ServerLoader.invalidate(client);
+        System.out.println("Пользователь " + this.nickname + " отключился"+ " " + format.format(data));
     }
 
 }

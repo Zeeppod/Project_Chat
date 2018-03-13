@@ -1,6 +1,6 @@
 package Server;
 
-import Server.packet.OPacket;
+import Server.packet.*;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -12,7 +12,7 @@ import java.util.Scanner;
 
 public class ServerLoader {
 
-    private static ServerSocket server;
+    public static ServerSocket serverSocket;
     private static ServerHandler handler;
     public static Map<Socket, ClientHandler> handlers = new HashMap<>();
 
@@ -24,12 +24,12 @@ public class ServerLoader {
     }
 
     private static void handle(){
-        handler = new ServerHandler(server);
+        handler = new ServerHandler(serverSocket);
         handler.start();
         readChat();
     }
 
-    public static void sendPacket(Socket receiver, OPacket packet){
+     public static void sendPacket(Socket receiver, OPacket packet){
         try{
             DataOutputStream dos = new DataOutputStream(receiver.getOutputStream());
             dos.writeShort(packet.getId());
@@ -45,18 +45,15 @@ public class ServerLoader {
         while (true) {
             if (scan.hasNextLine()) {
                 String line = scan.nextLine();
-
-                if (line.equals("/end"))
-                    end();
+                if (line.equals("/end")){
+                    end();}
                 else {
                     System.out.println("Неизвестная команда");
                 }
             } else
                 try {
                     Thread.sleep(10);
-                } catch (InterruptedException ex) {
-
-                }
+                } catch (InterruptedException ex) {}
         }
     }
 
@@ -64,9 +61,10 @@ public class ServerLoader {
         return handler;
     }
 
-    private static void start(){
+    private static void start() {
+
         try{
-            server = new ServerSocket(8889);
+            serverSocket = new ServerSocket(666);
         }catch (IOException ex){
             ex.printStackTrace();
         }
@@ -74,7 +72,7 @@ public class ServerLoader {
 
     public static void end(){
         try{
-        server.close();
+            serverSocket.close();
     }catch (IOException ex){}
     System.exit(0);
     }

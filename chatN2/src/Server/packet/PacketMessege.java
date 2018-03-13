@@ -1,5 +1,6 @@
 package Server.packet;
 
+import Server.DB.Save;
 import Server.ServerLoader;
 
 import java.io.DataInputStream;
@@ -36,9 +37,9 @@ public class PacketMessege extends OPacket{
     }
 
     @Override
-    public void handle() {
+    public void handle() throws Exception {
         sender = ServerLoader.getHandler(getSocket()).getNickname();
         ServerLoader.handlers.keySet().forEach(s -> ServerLoader.sendPacket(s,this));
-        System.out.println(String.format("[%s] %s", sender, messege ));
+        Save.save(sender, messege);
     }
 }
